@@ -450,4 +450,4 @@ The project demonstrates practical experience with:
 
 **Francisco de Castro Rodrigues**
 
-Quality Management / Software Developer of QM App for Color Analysis
+QA / Developer of the QM Color Analysis Application
