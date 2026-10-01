@@ -4,10 +4,12 @@ A Flutter-based industrial Quality Management application for color measurement 
 
 This project was developed to explore how measurement data from an industrial color management system can be transformed into a more accessible and useful Quality Management interface.
 
-The application connects to a Microsoft SQL Server data source through ODBC, processes raw measurement data, evaluates color tolerances, and presents the results through interactive dashboards and analysis tools.
+The production architecture connects to a Microsoft SQL Server data source through ODBC, processes raw measurement data, evaluates color tolerances, and presents the results through interactive dashboards and analysis tools.
 
-> **Note:** This repository contains a sanitized version of the project.  
-> Production database configuration, infrastructure details, and the original database schema are intentionally excluded.
+The public repository runs in **Demo Mode** using automatically generated fictional measurement data. This allows the complete application workflow to be explored without access to the original industrial database or infrastructure.
+
+> **Note:** This repository contains a sanitized portfolio version of the project.  
+> Production database configuration, infrastructure details, the original database schema, and real measurement data are intentionally excluded.
 
 ---
 
@@ -86,11 +88,11 @@ Structured Information
 Quality Analysis
        ↓
 Actionable Insights
-
 ```
+
 This separation also allows the existing measurement process to remain unchanged: measurements continue to be created in the original industrial system, while the QM application provides an additional analytical layer.
 
---- 
+---
 
 ## Main Features
 
@@ -117,8 +119,8 @@ Measurement records can be inspected individually with information such as:
 - reference / standard
 - measurement date
 - user
-- L\*, a\*, b\* values
-- ΔL\*, Δa\*, Δb\*
+- L*, a*, b* values
+- ΔL*, Δa*, Δb*
 - ΔE
 - gloss
 - applicable tolerances
@@ -180,7 +182,41 @@ Tolerance values are evaluated per measurement rather than using fixed global li
 
 ## Architecture
 
-The application follows a lightweight direct-data architecture:
+The project supports two data-source architectures: a self-contained public Demo Mode and the original production database architecture.
+
+### Public Demo Architecture
+
+```text
+DemoMeasurementService
+          │
+          ▼
+Generated Fictional Measurements
+          │
+          ▼
+    List<Measurement>
+          │
+          ▼
+  Data Processing Layer
+          │
+          ├── Measurement grouping
+          ├── Color difference calculations
+          ├── Tolerance evaluation
+          └── Quality analysis
+          │
+          ▼
+       Flutter UI
+          │
+          ├── Dashboard
+          ├── Measurements
+          ├── Analysis
+          └── Frag KI
+```
+
+The public repository uses `DemoMeasurementService` to generate a realistic fictional measurement dataset directly in Dart.
+
+No production database connection is required or attempted when running the portfolio demo.
+
+### Production Architecture
 
 ```text
 Industrial Measurement System
@@ -189,13 +225,16 @@ Industrial Measurement System
     Microsoft SQL Server
             │
             ▼
-      ODBC Driver 18
+       ODBC Driver 18
             │
             ▼
-        Dart / Flutter
+       ColibriService
             │
             ▼
-     Data Processing Layer
+     List<Measurement>
+            │
+            ▼
+  Data Processing Layer
             │
             ├── Measurement mapping
             ├── Color difference calculations
@@ -203,7 +242,7 @@ Industrial Measurement System
             └── Quality analysis
             │
             ▼
-        Flutter UI
+         Flutter UI
             │
             ├── Dashboard
             ├── Measurements
@@ -211,7 +250,9 @@ Industrial Measurement System
             └── Frag KI
 ```
 
-The application currently connects directly to SQL Server through ODBC.
+Both architectures provide the application with the same `Measurement` model, allowing the dashboard, measurement explorer, analysis tools, and Frag KI workflows to operate independently of the underlying data source.
+
+The production implementation connects directly to SQL Server through ODBC.
 
 For a larger production deployment, the architecture could be extended with a dedicated backend/API layer between the client application and the database.
 
@@ -222,9 +263,9 @@ For a larger production deployment, the architecture could be extended with a de
 | Technology | Purpose |
 |---|---|
 | Flutter | Application framework |
-| Dart | Application logic |
-| Microsoft SQL Server | Measurement data source |
-| ODBC Driver 18 | Database connectivity |
+| Dart | Application logic and demo-data generation |
+| Microsoft SQL Server | Production measurement data source |
+| ODBC Driver 18 | Production database connectivity |
 | `odbc_fast` | Dart ODBC integration |
 | Windows | Primary desktop deployment target |
 | Git / GitHub | Version control and project documentation |
@@ -252,6 +293,7 @@ lib/
 │
 ├── services/
 │   ├── colibri_service.dart
+│   ├── demo_measurement_data_service.dart
 │   ├── measurement_data_service.dart
 │   └── ai_analyzer.dart
 │
@@ -265,9 +307,11 @@ lib/
 
 ## Database Integration
 
-Database access is implemented using Microsoft ODBC.
+The production data integration is implemented using Microsoft ODBC.
 
-The application:
+The public Demo Mode does not require or initiate this database connection.
+
+The production application:
 
 1. initializes the ODBC service
 2. establishes a SQL Server connection
@@ -279,7 +323,7 @@ The application:
 
 Sensitive connection information is not stored in the repository.
 
-The local application uses:
+The local production application uses:
 
 ```text
 lib/config/database_config.dart
@@ -299,7 +343,7 @@ lib/config/database_config.example.dart
 
 The production SQL query and database schema are also intentionally excluded from version control.
 
-The local application uses:
+The local production application uses:
 
 ```text
 lib/config/colibri_query.dart
@@ -317,7 +361,7 @@ The example demonstrates the expected query interface and result aliases without
 
 ## Local Configuration
 
-To configure the application for another environment, create local versions of the example configuration files:
+To configure the application for a production database environment, create local versions of the example configuration files:
 
 ```text
 database_config.example.dart
@@ -337,19 +381,52 @@ Then adapt the connection string and SQL query to the target environment.
 
 Both local configuration files are excluded from version control.
 
+These files are not required to run the public Demo Mode.
+
 ---
 
-## Demo Data
+## Demo Mode
 
-The repository also contains a fictional measurement dataset for development and demonstration purposes.
+The public repository runs in **Demo Mode** by default.
+
+Instead of connecting to the production SQL Server environment, the application uses:
 
 ```text
-assets/QS_FakeDaten_mit_Bezug.csv
+lib/services/demo_measurement_data_service.dart
 ```
 
-The dataset does not contain production measurement data.
+`DemoMeasurementService` generates a fictional but structured measurement dataset directly in Dart.
 
-It can be used to develop or demonstrate application functionality without requiring access to the original industrial database.
+The generated data includes:
+
+- fictional article numbers and component names
+- production order numbers
+- reference standards
+- measured CIELAB values
+- reference CIELAB values
+- ΔL*, Δa*, Δb* and ΔE
+- measurement-specific tolerances
+- OK / NOK results
+- measurement dates
+- fictional users
+- selected gloss measurements
+
+The dataset contains both normal measurements and deliberately introduced tolerance deviations so that NOK analysis, production-order rankings, filtering, dashboards, and analytical workflows can be demonstrated meaningfully.
+
+A fixed random seed is used to keep the generated dataset consistent and reproducible.
+
+The same `Measurement` model used by the production data integration is also used by Demo Mode. As a result, the application features operate on the simulated measurements without requiring separate demo-specific UI logic.
+
+The sidebar displays:
+
+```text
+DEMO MODE
+Simulated measurement data
+```
+
+to make it clear that the running portfolio version does not display real production data.
+
+No company production measurements are included in the public repository.
 
 ---
 
@@ -373,6 +450,8 @@ Sanitized `.example.dart` configuration files document the expected interfaces w
 
 ## Running the Project
 
+The public repository can be run directly in Demo Mode and does not require access to a SQL Server database.
+
 Install Flutter and verify the environment:
 
 ```bash
@@ -385,32 +464,50 @@ Install the project dependencies:
 flutter pub get
 ```
 
-For database-connected operation, create and configure the local files described in the **Local Configuration** section.
-
-Then run the Windows application:
+Run the Windows application:
 
 ```bash
 flutter run -d windows
 ```
 
-A compatible Microsoft SQL Server ODBC driver is required for database connectivity.
+The application will load the generated fictional measurement dataset automatically.
+
+### Production Database Configuration
+
+The SQL Server / ODBC integration remains represented in the project architecture, but production configuration is intentionally excluded from the repository.
+
+A database-connected deployment requires environment-specific versions of:
+
+```text
+lib/config/database_config.dart
+lib/config/colibri_query.dart
+```
+
+as described in the **Local Configuration** section.
+
+A compatible Microsoft SQL Server ODBC driver and appropriate database permissions are also required for production connectivity.
 
 ---
 
 ## Development Status
 
-The project is under active development.
+The core application workflow is functional.
 
-Current areas of development include:
+Implemented functionality includes:
 
-- dashboard improvements
-- quality trend analysis
+- interactive QM dashboard
+- generated portfolio Demo Mode
+- SQL Server / ODBC production integration architecture
+- measurement exploration and detailed measurement views
+- monthly measurement filtering
+- article-based filtering
 - production-order analysis
-- measurement filtering
-- database integration
-- reporting
-- analytical question workflows
-- improved deployment architecture
+- OK / NOK evaluation
+- measurement-specific tolerance evaluation
+- color deviation analysis
+- dashboard quality indicators
+- deterministic Frag KI analytical workflows
+- separation of production configuration from public source code
 
 Potential future improvements include:
 

@@ -14,6 +14,7 @@ import '../widgets/sidebar.dart';
 
 import '../services/measurement_data_service.dart';
 import '../services/colibri_service.dart';
+import '../services/demo_measurement_data_service.dart';
 
 // ================================================================
 // DASHBOARD
@@ -75,10 +76,10 @@ class _DashboardPageState extends State<DashboardPage> {
     );
 
     try {
-      final colibriService = ColibriService();
+      final demoService = DemoMeasurementService();
 
       final loadedMeasurements =
-          await colibriService.getMeasurements();
+          await demoService.getMeasurements();
 
       final dataService = MeasurementDataService();
 

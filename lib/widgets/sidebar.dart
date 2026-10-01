@@ -86,6 +86,66 @@ class AppSidebar extends StatelessWidget {
 
               const Spacer(),
 
+              // ==================================================
+              // DEMO MODE
+              // ==================================================
+
+              const Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 12,
+                ),
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: Color(0xFF1E3A6D),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 10,
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.science_outlined,
+                          color: Color(0xFF93C5FD),
+                          size: 18,
+                        ),
+                        SizedBox(width: 10),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'DEMO MODE',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 0.8,
+                                ),
+                              ),
+                              SizedBox(height: 2),
+                              Text(
+                                'Simulated measurement data',
+                                style: TextStyle(
+                                  color: Color(0xFFCBD5E1),
+                                  fontSize: 10,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+
               _sidebarItem(
                 icon: Icons.help_outline,
                 label: 'Hilfe',
