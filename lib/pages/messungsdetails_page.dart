@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../models/measurement.dart';
 
 class MessungsdetailsPage extends StatelessWidget {
   final dynamic measurement;
@@ -10,23 +9,23 @@ class MessungsdetailsPage extends StatelessWidget {
   });
 
   // ============================================================
-  // BEZUG / REFERENZ
+  // REFERENCE
   // ============================================================
 
   double get bezugL => measurement.standardL.toDouble();
   double get bezugA => measurement.standardA.toDouble();
   double get bezugB => measurement.standardB.toDouble();
 
-  // IMPORTANTE:
-  // Os valores do Colibri são TOLERÂNCIAS.
+  // IMPORTANT:
+  // The Colibri values are TOLERANCES.
   //
-  // Exemplo:
+  // Example:
   // Standard a* = -0.22
   // la = 0.30
   // ua = 0.30
   //
-  // => limite inferior = -0.22 - 0.30
-  // => limite superior = -0.22 + 0.30
+  // => lower limit = -0.22 - 0.30
+  // => upper limit = -0.22 + 0.30
 
   double? get toleranzL => measurement.lowerL?.toDouble();
   double? get toleranzLUpper =>
@@ -83,7 +82,7 @@ class MessungsdetailsPage extends StatelessWidget {
   }
 
   // ============================================================
-  // TOLERANZPRÜFUNG
+  // TOLERANCE TEST
   // ============================================================
 
   bool isLWithinTolerance() {
@@ -123,7 +122,7 @@ class MessungsdetailsPage extends StatelessWidget {
   }
 
   // ============================================================
-  // TOLERANZ-DARSTELLUNG
+  // TOLERANCE DISPLAY
   // ============================================================
 
   String formatTolerance(
@@ -137,16 +136,16 @@ class MessungsdetailsPage extends StatelessWidget {
     }
 
     final bool symmetric =
-        (lowerTolerance! - upperTolerance!).abs() < 0.0001;
+        (lowerTolerance - upperTolerance).abs() < 0.0001;
 
     if (symmetric) {
       return '${standard.toStringAsFixed(2)} ± '
-          '${lowerTolerance!.abs().toStringAsFixed(2)}';
+          '${lowerTolerance.abs().toStringAsFixed(2)}';
     }
 
     return '${standard.toStringAsFixed(2)} '
-        '(-${lowerTolerance!.toStringAsFixed(2)} / '
-        '+${upperTolerance!.toStringAsFixed(2)})';
+        '(-${lowerTolerance.toStringAsFixed(2)} / '
+        '+${upperTolerance.toStringAsFixed(2)})';
   }
 
   String formatRange(
@@ -162,7 +161,7 @@ class MessungsdetailsPage extends StatelessWidget {
   }
 
   // ============================================================
-  // ALLGEMEINE DETAILZEILE
+  // GENERAL DETAIL ROW
   // ============================================================
 
   Widget detailRow(
@@ -246,7 +245,7 @@ class MessungsdetailsPage extends StatelessWidget {
   }
 
   // ============================================================
-  // MESSWERTE
+  // MEASURED VALUES
   // ============================================================
 
   Widget measurementValuesCard() {
@@ -312,7 +311,7 @@ class MessungsdetailsPage extends StatelessWidget {
   }
 
   // ============================================================
-  // BEZUG
+  // REFERENCE
   // ============================================================
 
   Widget referenceValuesCard() {
@@ -399,7 +398,7 @@ class MessungsdetailsPage extends StatelessWidget {
   }
 
   // ============================================================
-  // CIELAB GRAFIK
+  // CIELAB CHART
   // ============================================================
 
   Widget labChartCard() {
@@ -562,7 +561,7 @@ class MessungsdetailsPage extends StatelessWidget {
             const SizedBox(height: 20),
 
             // ==================================================
-            // ALLGEMEINE INFORMATIONEN
+            // GENERAL INFORMATIONS
             // ==================================================
 
             Container(
@@ -628,7 +627,7 @@ class MessungsdetailsPage extends StatelessWidget {
             const SizedBox(height: 20),
 
             // ==================================================
-            // MESSWERTE + BEZUG + GRAFIK
+            // MEASURED VALUES + REFERENCE + CHART
             // ==================================================
 
             LayoutBuilder(
@@ -776,8 +775,8 @@ class LabChartPainter extends CustomPainter {
     // ==========================================================
     // CHART RANGE
     //
-    // A caixa verde representa a tolerância.
-    // O resto do gráfico é espaço adicional à volta da caixa.
+    // The green box represents the tolerance.
+    // The rest of the chart is additional space around the box.
     // ==========================================================
 
     final double aToleranceRange =
@@ -871,7 +870,7 @@ class LabChartPainter extends CustomPainter {
       ..color = const Color(0xFFBFDBFE);
 
     // ==========================================================
-    // SEPARATE PRÜFUNG
+    // SEPARATE TEST
     // ==========================================================
 
     final bool lInside =
@@ -890,7 +889,7 @@ class LabChartPainter extends CustomPainter {
         aInside && bInside;
 
     // ==========================================================
-    // MESSUNGSPUNKT
+    // MEASUREMENT POINT
     // ==========================================================
 
     final Color abPointColor;
@@ -928,7 +927,7 @@ class LabChartPainter extends CustomPainter {
       ..color = const Color(0xFF475569);
 
     // ==========================================================
-    // HINTERGRUND
+    // BACKGROUND
     // ==========================================================
 
     final Paint backgroundPaint = Paint()
@@ -1033,7 +1032,7 @@ class LabChartPainter extends CustomPainter {
     }
 
     // ==========================================================
-    // BEZUG POSITION
+    // REFERENCE POSITION
     // ==========================================================
 
     final double referenceX = mapValue(
@@ -1123,7 +1122,7 @@ class LabChartPainter extends CustomPainter {
     );
 
     // ==========================================================
-    // BEZUG PUNKT
+    // REFERENCE POINT
     // ==========================================================
 
     canvas.drawCircle(
@@ -1160,7 +1159,7 @@ class LabChartPainter extends CustomPainter {
     );
 
     // ==========================================================
-    // MESSUNGSPUNKT
+    // MEASUREMENT POINT
     // ==========================================================
 
     final double measurementX =
@@ -1200,7 +1199,7 @@ class LabChartPainter extends CustomPainter {
     );
 
     // ==========================================================
-    // LABEL MESSUNG
+    // LABEL MEASUREMENT
     // ==========================================================
 
     final String abLabelText;
@@ -1270,7 +1269,7 @@ class LabChartPainter extends CustomPainter {
     );
 
     // ==========================================================
-    // LABEL BEZUG
+    // LABEL REFERENCE
     // ==========================================================
 
     final TextPainter bezugLabel =
@@ -1297,12 +1296,12 @@ class LabChartPainter extends CustomPainter {
     // ==========================================================
     // AXIS LABELS
     //
-    // Mostrar tolerâncias relativas ao Bezug:
-    // a*: tolerância inferior / 0 / tolerância superior
-    // b*: tolerância inferior / 0 / tolerância superior
+    // Show tolerances relative to the reference.
+    // a*: lower tolerance / 0 / upper tolerance
+    // b*: lower tolerance / 0 / upper tolerance
     //
-    // Os valores absolutos continuam a ser usados internamente
-    // para calcular as posições no gráfico.
+    // The absolute values are still used internally
+    // to calculate the positions on the chart.
     // ==========================================================
 
     const TextStyle axisTextStyle =
@@ -1324,7 +1323,7 @@ class LabChartPainter extends CustomPainter {
     ];
 
     // ==========================================================
-    // a* TOLERANZ-LABELS
+    // a* TOLERANCE-LABELS
     // ==========================================================
 
     for (final value in xLabels) {
@@ -1366,7 +1365,7 @@ class LabChartPainter extends CustomPainter {
     }
 
     // ==========================================================
-    // b* TOLERANZ-LABELS
+    // b* TOLERANCE-LABELS
     // ==========================================================
 
     for (final value in yLabels) {
@@ -1411,7 +1410,7 @@ class LabChartPainter extends CustomPainter {
     }
 
     // ==========================================================
-    // ACHSENTITEL
+    // AXIS TITLE
     // ==========================================================
 
     final TextPainter aTitle =
@@ -1461,7 +1460,7 @@ class LabChartPainter extends CustomPainter {
     );
 
     // ==========================================================
-    // L* / HELLIGKEIT
+    // L* / LIGHTNESS
     // ==========================================================
 
     final double gaugeLeft =
@@ -1584,7 +1583,7 @@ class LabChartPainter extends CustomPainter {
     );
 
     // ==========================================================
-    // BEZUG L*
+    // REFERENCE L*
     // ==========================================================
 
     final double referenceLPosition =
@@ -1609,7 +1608,7 @@ class LabChartPainter extends CustomPainter {
     );
 
     // ==========================================================
-    // MESSUNG L*
+    // MEASUREMENT L*
     // ==========================================================
 
     final double measurementLPosition =
@@ -1646,7 +1645,7 @@ class LabChartPainter extends CustomPainter {
     );
 
     // ==========================================================
-    // L* TITEL
+    // L* TITLE
     // ==========================================================
 
     final TextPainter lTitle =
@@ -1696,13 +1695,13 @@ class LabChartPainter extends CustomPainter {
     );
 
     // ==========================================================
-    // L* TOLERANZ-SKALA
+    // L* TOLERANCE SCALE
     //
-    // Mostrar apenas:
-    // tolerância superior / 0 / tolerância inferior
+    // Display only:
+    // upper tolerance / 0 / lower tolerance
     //
-    // lMin e lMax continuam a ser usados apenas internamente
-    // para posicionar corretamente a medição.
+    // lMin and lMax are still used only internally
+    // to correctly position the measurement.
     // ==========================================================
 
     final double lUpperTolerance =

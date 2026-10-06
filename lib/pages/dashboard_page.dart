@@ -13,7 +13,6 @@ import 'frag_ai_page.dart';
 import '../widgets/sidebar.dart';
 
 import '../services/measurement_data_service.dart';
-import '../services/colibri_service.dart';
 import '../services/demo_measurement_data_service.dart';
 
 // ================================================================
@@ -29,7 +28,7 @@ class DashboardPage extends StatefulWidget {
 
 class _DashboardPageState extends State<DashboardPage> {
   // ============================================================
-  // DATEN
+  // DATA
   // ============================================================
 
   List<Measurement> measurements = [];
@@ -51,7 +50,7 @@ class _DashboardPageState extends State<DashboardPage> {
   void initState() {
     super.initState();
 
-    print('=== DASHBOARD INITSTATE ===');
+    debugPrint('=== DASHBOARD INITSTATE ===');
 
     loadMeasurements();
   }
@@ -67,11 +66,11 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   // ============================================================
-  // DATEN LADEN
+  // DATA LOADING
   // ============================================================
 
   Future<void> loadMeasurements() async {
-    print(
+    debugPrint(
       '=== DASHBOARD LOAD MEASUREMENTS START ===',
     );
 
@@ -90,7 +89,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
       if (!mounted) return;
 
-      print(
+      debugPrint(
         '=== DASHBOARD LOAD MEASUREMENTS SUCCESS: '
         '${loadedMeasurements.length} ===',
       );

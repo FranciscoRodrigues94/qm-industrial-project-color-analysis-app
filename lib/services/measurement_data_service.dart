@@ -6,7 +6,7 @@ import '../models/project_structure.dart';
 class MeasurementDataService {
   
   // ============================================================
-  // MESSUNGEN LADEN
+  // LOAD MEASUREMENTS
   // ============================================================
 
   Future<List<Measurement>> loadMeasurements() async {
@@ -131,7 +131,7 @@ class MeasurementDataService {
   }
 
   // ============================================================
-  // PROJEKT- UND BEZUG-STRUKTUR
+  // PROJECT AND REFERENCE STRUCTURE
   // ============================================================
 
   List<ProjectGroup> groupMeasurements(
@@ -226,7 +226,7 @@ class MeasurementDataService {
   }
 
   // ============================================================
-  // CSV PARSEN
+  // PARSE CSV
   // ============================================================
 
   List<List<String>> parseCsv(
@@ -256,7 +256,7 @@ class MeasurementDataService {
   }
 
   // ============================================================
-  // DATUM PARSEN
+  // PARSE DATE
   // ============================================================
 
   DateTime parseGermanDate(
@@ -326,7 +326,7 @@ class MeasurementDataService {
   }
 
   // ============================================================
-  // DEUTSCHE ZAHLEN PARSEN
+  // PARSE GERMAN NUMBERS
   // ============================================================
 
   double parseGermanNumber(

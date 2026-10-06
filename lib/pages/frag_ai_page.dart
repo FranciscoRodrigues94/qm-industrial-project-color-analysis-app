@@ -578,10 +578,6 @@ class _FragAIPageState extends State<FragAIPage> {
 
       }
 
-      // Primeira linha da resposta:
-
-      // apresentada como título principal.
-
       if (firstContentLine) {
 
         firstContentLine = false;
@@ -626,7 +622,7 @@ class _FragAIPageState extends State<FragAIPage> {
 
       }
 
-      // Títulos das secções principais da análise.
+      // Main analysis section titles.
 
       if (_isSectionTitle(line)) {
 
@@ -744,9 +740,8 @@ class _FragAIPageState extends State<FragAIPage> {
 
       }
 
-      // Listas numeradas, caso sejam usadas futuramente
-
-      // pelo analyzer.
+      // Numbered lists, in case they are used by the analyzer
+      // in the future.
 
       if (_isNumberedListItem(line)) {
 
@@ -830,8 +825,9 @@ class _FragAIPageState extends State<FragAIPage> {
 
       }
 
-      // Tabela estruturada produzida pelo analyzer.
-      // Formato: TABLE|cab1|cab2|...;;cel1|cel2|...;;...
+      // Structured table produced by the analyzer.
+      // Format: TABLE|header1|header2|...;;cell1|cell2|...;;...
+      
       if (line.startsWith('TABLE|')) {
         final encodedRows = line.substring('TABLE|'.length).split(';;');
         final rows = encodedRows
@@ -850,7 +846,7 @@ class _FragAIPageState extends State<FragAIPage> {
         continue;
       }
 
-      // Texto normal.
+      // Normal text
 
       widgets.add(
 

@@ -4,7 +4,7 @@ import '../models/measurement.dart';
 
 class DemoMeasurementService {
   // ============================================================
-  // DEMO-MESSUNGEN LADEN
+  // DEMO- MEASUREMENTS LOADING
   // ============================================================
 
   Future<List<Measurement>> getMeasurements() async {
@@ -274,7 +274,7 @@ class DemoMeasurementService {
   }
 
   // ============================================================
-  // DEMO-WERTE
+  // DEMO-VALUES
   // ============================================================
 
   double _signedVariation(
@@ -344,7 +344,7 @@ class DemoMeasurementService {
   }
 
   // ============================================================
-  // TOLERANZPRÜFUNG
+  // TOLERANCE CHECK
   // ============================================================
 
   bool _withinLimits(

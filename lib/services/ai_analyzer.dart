@@ -463,7 +463,7 @@ class QSAnalyzer {
 
     ]);
 
-    // Fragen wie "Was fällt dir auf?" sind explorativ.
+    // Questions like "Was fällt dir auf?" are exploratory.
 
     final isExplorative = _hasAny(q, [
 
@@ -525,11 +525,10 @@ class QSAnalyzer {
 
     }
 
-    // Vergleich mehrerer BAs.
-
-    // Neben "BA 1001 und BA 1002" werden auch natürliche Formen
-
-    // wie "1001 oder 1002" erkannt.
+    // Comparison of multiple BAs.
+    //
+    // In addition to "BA 1001 and BA 1002", natural forms
+    // such as "1001 or 1002" are also recognized.
 
     final comparisonBaNrs = _extractComparisonBaNrs(q);
 
@@ -551,9 +550,9 @@ class QSAnalyzer {
 
     }
 
-    // Einzelne BA + Warum-Frage.
-    // Diese Fragen sollen erklären, warum die BA als n.i.O.
-    // eingestuft wird, ohne eine nicht belegbare Prozessursache zu erfinden.
+    // Single BA + why question.
+    // These questions should explain why the BA is classified as n.i.O.
+    // without inventing an unsupported process cause.
     final asksWhy = _hasAny(q, [
       'warum',
       'wieso',
@@ -576,7 +575,7 @@ class QSAnalyzer {
 
     }
 
-    // Einzelne BA + Entwicklung/Verlauf.
+    // Single BA + Development
 
     if (baNrs.length == 1 && asksDevelopment) {
 
@@ -594,7 +593,7 @@ class QSAnalyzer {
 
     }
 
-    // Einzelne BA + konkrete Messgröße.
+    // Single BA + specific measurement parameter
 
     if (baNrs.length == 1 && dimension != null) {
 
@@ -612,7 +611,7 @@ class QSAnalyzer {
 
     }
 
-    // Einzelne BA.
+    // Single BA.
 
     if (baNrs.length == 1) {
 
@@ -652,8 +651,8 @@ class QSAnalyzer {
 
     }
 
-    // Konkreter Artikel: eine Frage zu genau diesem Artikel soll
-    // niemals in ein allgemeines Top-5-Ranking umgeleitet werden.
+    // Specific article: a question about this exact article should
+    // never be redirected tp a general top-5 ranking.
     if (artikelnummer != null) {
       return _QSIntent(
         'article_specific',
@@ -663,7 +662,7 @@ class QSAnalyzer {
       );
     }
 
-    // Globale zeitliche Entwicklung einer Messgröße, z. B.
+    // Global trend of a measurement parameter over time, e.g.
     // "Wie entwickelt sich ΔL* über die Zeit?"
     if (dimension != null && asksDevelopment && baNrs.isEmpty) {
       return _QSIntent(
@@ -713,7 +712,7 @@ class QSAnalyzer {
 
     }
 
-    // Sem dimensão: "Welche Messgröße hat die meisten Abweichungen?"
+    // Without dimension: "Welche Messgröße hat die meisten Abweichungen?"
 
     if (dimension == null &&
 
@@ -749,7 +748,7 @@ class QSAnalyzer {
 
     // "Welche Toleranz wird am häufigsten überschritten?"
 
-    // oder "Wo haben wir die größten Toleranzprobleme?"
+    // or "Wo haben wir die größten Toleranzprobleme?"
 
     if (dimension == null &&
 
@@ -767,7 +766,7 @@ class QSAnalyzer {
 
     }
 
-    // Com dimensão, mas sem artigo/BA:
+    // With dimension, but without article/BA:
 
     // "Wo gibt es Probleme bei L*?"
 
@@ -1669,7 +1668,7 @@ class QSAnalyzer {
 
   // ================================================================
 
-  // BA VERGLEICH
+  // BA COMPARISON
 
   // ================================================================
 
@@ -2100,7 +2099,7 @@ class QSAnalyzer {
 
   // ================================================================
 
-  // BA ENTWICKLUNG / TREND
+  // BA DEVELOPMENT / TREND
 
   // ================================================================
 
@@ -2121,8 +2120,8 @@ class QSAnalyzer {
       );
     }
 
-    // Innerhalb einer BA ist die Reihenfolge der Messungen aussagekräftiger
-    // als eine Gruppierung nach Kalendermonaten.
+    // Within a BA, the sequence of measurements is more meaningful
+    // than grouping them by calendar month.
     if (dimension != null) {
       return _baDimensionEntwicklung(
         baNr,
@@ -2167,8 +2166,8 @@ class QSAnalyzer {
       return QSAnalysisResult(buffer.toString());
     }
 
-    // Vergleich des ersten und letzten Drittels. So bleibt der Trend
-    // weniger abhängig von einer einzelnen ersten/letzten Messung.
+    // Comparison of the first and last third. This makes the trend
+    // less dependent on a single first or last measurement.
     final windowSize = math.max(1, (data.length / 3).ceil());
     final firstWindow = data.take(windowSize).toList();
     final lastWindow = data.skip(data.length - windowSize).toList();
@@ -2526,23 +2525,6 @@ class QSAnalyzer {
     return QSAnalysisResult(buffer.toString());
   }
 
-  String _formatMetricScore(
-
-    double value,
-
-    String dimension,
-
-  ) {
-
-    if (dimension == 'ΔE*') {
-
-      return 'Ø |ΔE*| ${_formatNumber(value)}';
-
-    }
-
-    return '${value.toStringAsFixed(1)} % außerhalb';
-
-  }
 
   String _formatDate(DateTime date) {
 
@@ -2874,7 +2856,7 @@ class QSAnalyzer {
 
   // ================================================================
 
-  // ALLGEMEIN
+  // GENERAL
 
   // ================================================================
 
@@ -2964,7 +2946,7 @@ class QSAnalyzer {
 
   // ================================================================
 
-  // TOLERANZ
+  // TOLERANCE
 
   // ================================================================
 
@@ -3080,7 +3062,7 @@ class QSAnalyzer {
 
   // ================================================================
 
-  // MESSGRÖSSE OHNE VORGEGEBENE DIMENSION
+  // MEASUREMENT PARAMETER WITHOUT A SPECIFIED DIMENSION
 
   // ================================================================
 
@@ -3182,7 +3164,7 @@ class QSAnalyzer {
 
   // ================================================================
 
-  // ARTIKEL + DIMENSION
+  // ARTICLE + DIMENSION
 
   // ================================================================
 
@@ -3316,7 +3298,7 @@ class QSAnalyzer {
 
   // ================================================================
 
-  // ARTIKEL MIT MEISTEN ABWEICHUNGEN
+  // ARTICLE WITH THE MOST DEVIATIONS
 
   // ================================================================
 
@@ -3424,7 +3406,7 @@ class QSAnalyzer {
 
   // ================================================================
 
-  // HÖCHSTE FEHLERQUOTE
+  // HIGHEST FAILURE RATE
 
   // ================================================================
 
@@ -3492,8 +3474,8 @@ class QSAnalyzer {
             return byRate;
           }
 
-// Mesma Fehlerquote:
-// o artigo com mais medições fica primeiro.
+        // Same failure rate:
+        // the article with the most measurements comes first.
           return (total[b] ?? 0).compareTo(total[a] ?? 0);
 
         },
@@ -3559,7 +3541,7 @@ class QSAnalyzer {
   }
 
   // ================================================================
-  // DETAILANALYSE EINES KONKRETEN ARTIKELS
+  // DETAILED ANALYSIS OF A SPECIFIC ARTICLE
   // ================================================================
 
   QSAnalysisResult _artikelDetailAnalyse(String artikelnummer, int? year) {
@@ -3587,9 +3569,9 @@ class QSAnalyzer {
         .toList()
       ..sort((a, b) => a.profile.firstDate.compareTo(b.profile.firstDate));
 
-    // Bei Artikeln mit vielen Produktionen bleibt die Detailanalyse lesbar:
-    // Es werden höchstens die 5 zuletzt gemessenen BAs berücksichtigt.
-    // Entscheidend ist das Datum der letzten Messung, nicht die BA-Nummer.
+    // For articles with many production runs, the detailed analysis remains readable:
+    // A maximum of the 5 most recently measured BAs are considered.
+    // The date of the latest measurement is what matters, not the BA number.
     final totalBaCount = allProfiles.length;
     final profilesByRecency = allProfiles.toList()
       ..sort((a, b) => b.profile.lastDate.compareTo(a.profile.lastDate));
@@ -3597,8 +3579,8 @@ class QSAnalyzer {
     final profiles = profilesByRecency.take(5).toList()
       ..sort((a, b) => a.profile.firstDate.compareTo(b.profile.firstDate));
 
-    // Detailabschnitte sollen sich auf dieselben BAs beziehen, die auch
-    // im BA-Vergleich angezeigt werden.
+    // Detail sections should refer to the same BAs that are also
+    // displayed in the BA comparison.
     final selectedBaNrs = profiles.map((p) => p.baNr).toSet();
     final analysisData = data
         .where((m) {
@@ -3646,7 +3628,7 @@ class QSAnalyzer {
     }
 
     // ------------------------------------------------------------
-    // n.i.O.-Messungen im Detail
+    // NOK MEASUREMENTS IN DETAIL
     // ------------------------------------------------------------
     final nokMeasurements = analysisData.where(_isNok).toList();
 
@@ -3723,8 +3705,8 @@ class QSAnalyzer {
           final rateCompare =
               a.profile.errorRate.compareTo(b.profile.errorRate);
           if (rateCompare != 0) return rateCompare;
-          // Bei gleicher Fehlerquote ist die größere Datenbasis
-          // für einen Vergleich aussagekräftiger.
+          // With the same failure rate, the larger data set
+          // is more meaningful for comparison.
           return b.profile.total.compareTo(a.profile.total);
         });
 
@@ -3878,7 +3860,7 @@ class QSAnalyzer {
   }
 
   // ================================================================
-  // GLOBALE ZEITENTWICKLUNG EINER MESSGRÖSSE
+  // GLOBAL TREND OF A MEASUREMENT PARAMETER OVER TIME
   // ================================================================
 
   QSAnalysisResult _globaleDimensionEntwicklung(String dimension, int? year) {
@@ -3938,7 +3920,7 @@ class QSAnalyzer {
   }
 
   // ================================================================
-  // GEMEINSAMER ANALYSEKERN
+  // SHARED ANALYSIS CORE
   // ================================================================
 
   _BaProfile _buildBaProfile(List<Measurement> data) {

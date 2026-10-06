@@ -12,13 +12,13 @@ import '../services/colibri_service.dart';
 
 class MessungenPage extends StatefulWidget {
   // ============================================================
-  // MESSDATEN
+  // MEASUREMENT DATA
   // ============================================================
 
   final List<Measurement> measurements;
 
   // ============================================================
-  // PROJEKTSTRUKTUR
+  // PROJECT STRUCTURE
   // ============================================================
 
   final List<ProjectGroup> projectGroups;
@@ -38,7 +38,7 @@ class _MessungenPageState
     extends State<MessungenPage> {
 
   // ============================================================
-  // AKTUELLE MESSDATEN
+  // CURRENT MEASUREMENT DATA
   // ============================================================
 
   late List<Measurement> measurements;
@@ -64,24 +64,24 @@ class _MessungenPageState
       TextEditingController();
 
   // ============================================================
-  // ERGEBNIS-FILTER
+  // RESULT FILTER
   // ============================================================
 
   String selectedErgebnis = 'Alle';
 
   // ============================================================
-  // INITIALISIERUNG
+  // INITIALIZATION
   // ============================================================
 
   @override
   void initState() {
     super.initState();
 
-    // Die Messungen wurden bereits im Dashboard
-    // aus Colibri geladen.
+    // The measurements have already been loaded
+    // from Colibri in the dashboard.
     //
-    // Hier verwenden wir diese Daten direkt.
-    // Keine zweite SQL-Abfrage.
+    // Here we use this data directly.
+    // No second SQL query.
 
     measurements =
         List<Measurement>.from(
@@ -90,7 +90,7 @@ class _MessungenPageState
   }
 
   // ============================================================
-  // AUFRÄUMEN
+  // CLEANUP
   // ============================================================
 
   @override
@@ -104,7 +104,7 @@ class _MessungenPageState
   }
 
   // ============================================================
-  // DATUM FORMATIEREN
+  // DATE FORMATTING
   // ============================================================
 
   String formatDate(DateTime date) {
@@ -200,7 +200,7 @@ class _MessungenPageState
   }
 
   // ============================================================
-  // FILTER ZURÜCKSETZEN
+  // RESET FILTERS
   // ============================================================
 
   void clearFilters() {
@@ -214,7 +214,7 @@ class _MessungenPageState
   }
 
   // ============================================================
-  // MESSUNGEN AKTUALISIEREN
+  // REFRESH MEASUREMENTS
   // ============================================================
 
   Future<void> refreshMeasurements() async {
@@ -335,7 +335,7 @@ class _MessungenPageState
           ),
 
           // ========================================================
-          // HAUPTBEREICH
+          // MAIN AREA
           // ========================================================
 
           Expanded(
@@ -686,7 +686,7 @@ class _MessungenPageState
                 child:
                     DropdownButtonFormField<
                         String>(
-                  value:
+                  initialValue:
                       selectedErgebnis,
 
                   decoration:
@@ -1021,7 +1021,7 @@ class _MessungenPageState
             ),
 
             // ======================================================
-            // ZEILEN
+            // ROWS
             // ======================================================
 
             Expanded(
@@ -1064,7 +1064,7 @@ class _MessungenPageState
                       children: [
 
                         // ==========================================
-                        // DATUM
+                        // DATE
                         // ==========================================
 
                         Expanded(

@@ -1,6 +1,6 @@
 class Measurement {
   // ============================================================
-  // COLIBRI-IDENTIFIKATION
+  // COLIBRI IDENTIFICATION
   // ============================================================
 
   final String project;
@@ -10,7 +10,7 @@ class Measurement {
   final String standardSampleOid;
 
   // ============================================================
-  // MESSUNGSIDENTIFIKATION
+  // MEASUREMENT IDENTIFICATION
   // ============================================================
 
   final String name;
@@ -22,7 +22,7 @@ class Measurement {
   final String lichtart;
 
   // ============================================================
-  // GEMESSENE ABSOLUTWERTE
+  // MEASURED ABSOLUTE VALUES
   // ============================================================
 
   final double l;
@@ -30,7 +30,7 @@ class Measurement {
   final double b;
 
   // ============================================================
-  // ABSOLUTWERTE DES BEZUGS / STANDARDS
+  // REFERENCE / STANDARD ABSOLUTE VALUES
   // ============================================================
 
   final double standardL;
@@ -38,7 +38,7 @@ class Measurement {
   final double standardB;
 
   // ============================================================
-  // BERECHNETE WERTE
+  // CALCULATED VALUES
   // ============================================================
 
   final double deltaL;
@@ -47,7 +47,7 @@ class Measurement {
   final double deltaE;
 
   // ============================================================
-  // GLANZ
+  // GLOSS
   // ============================================================
 
   final double? gloss;
@@ -55,7 +55,7 @@ class Measurement {
   final double? deltaGloss;
 
   // ============================================================
-  // TOLERANZEN DES BEZUGS
+  // REFERENCE TOLERANCES
   // ============================================================
 
   final double? lowerL;
@@ -71,13 +71,13 @@ class Measurement {
   final double? upperGloss;
 
   // ============================================================
-  // PRÜFERGEBNIS
+  // INSPECTION RESULT
   // ============================================================
 
   final String status;
 
   // ============================================================
-  // KONSTRUKTOR
+  // CONSTRUCTOR
   // ============================================================
 
   Measurement({
@@ -147,7 +147,7 @@ class Measurement {
           json['lichtart']?.toString() ?? '',
 
       // ==========================================================
-      // GEMESSENE WERTE
+      // MEASURED VALUES
       // ==========================================================
 
       l: _toDouble(json['l']),
@@ -155,7 +155,7 @@ class Measurement {
       b: _toDouble(json['b']),
 
       // ==========================================================
-      // BEZUGSWERTE
+      // REFERENCE VALUES
       // ==========================================================
 
       standardL:
@@ -168,7 +168,7 @@ class Measurement {
           _toDouble(json['standardB']),
 
       // ==========================================================
-      // BERECHNETE WERTE
+      // CALCULATED VALUES
       // ==========================================================
 
       deltaL:
@@ -184,7 +184,7 @@ class Measurement {
           _toDouble(json['deltaE']),
 
       // ==========================================================
-      // GLANZ
+      // GLOSS
       // ==========================================================
 
       gloss:
@@ -197,7 +197,7 @@ class Measurement {
           _toNullableDouble(json['deltaGloss']),
 
       // ==========================================================
-      // TOLERANZEN
+      // TOLERANCES
       // ==========================================================
 
       lowerL:
@@ -225,7 +225,7 @@ class Measurement {
           _toNullableDouble(json['upperGloss']),
 
       // ==========================================================
-      // PRÜFERGEBNIS
+      // INSPECTION RESULT
       // ==========================================================
 
       status:
@@ -234,7 +234,7 @@ class Measurement {
   }
 
   // ============================================================
-  // HILFSFUNKTIONEN FÜR JSON
+  // JSON HELPER FUNCTIONS
   // ============================================================
 
   static double _toDouble(dynamic value) {

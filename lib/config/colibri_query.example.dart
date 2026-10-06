@@ -1,18 +1,18 @@
-/// Example SQL query configuration.
-///
-/// This file contains a sanitized example of the query structure used by
-/// the application. Table names, column names, joins, and property identifiers
-/// shown here are illustrative and do not represent the production database
-/// schema.
-///
-/// For a real deployment, create:
-///
-///   lib/config/colibri_query.dart
-///
-/// and implement [ColibriQuery.measurements] using the schema available in
-/// your environment.
-///
-/// The real file is intentionally excluded from version control.
+// Example SQL query configuration.
+//
+// This file contains a sanitized example of the query structure used by
+// the application. Table names, column names, joins, and property identifiers
+// shown here are illustrative and do not represent the production database
+// schema.
+//
+// For a real deployment, create:
+//
+//   lib/config/colibri_query.dart
+//
+// and implement [ColibriQuery.measurements] using the schema available in
+// your environment.
+//
+// The real file is intentionally excluded from version control.
 
 class ColibriQuery {
   static String measurements({

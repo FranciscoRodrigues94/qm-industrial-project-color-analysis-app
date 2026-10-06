@@ -3,7 +3,6 @@ import 'dart:math' as math;
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
-import '../main.dart';
 import '../models/project_structure.dart';
 import '../models/measurement.dart';
 
@@ -28,8 +27,8 @@ class AnalysePage extends StatefulWidget {
 }
 
 class _AnalysePageState extends State<AnalysePage> {
-  // ΔE* hat im aktuellen Datenmodell keine eigene Colibri-Toleranz.
-  // Dieser Wert bleibt vorerst als separater Grenzwert bestehen.
+  // ΔE* does not have its own Colibri tolerance in the current data model.
+  // For now, this value remains as a separate limit.
   static const double toleranzDeltaE = 2.0;
 
   final TextEditingController artikelController =
@@ -58,13 +57,13 @@ class _AnalysePageState extends State<AnalysePage> {
   bool showDeltaA = false;
   bool showDeltaB = false;
 
-  // Toleranzlinien können nicht unabhängig von den Messreihen ein-/ausgeschaltet werden.
+  // Tolerance lines cannot be enabled or disabled independently of the measurement series.
   bool showToleranceL = true;
   bool showToleranceA = true;
   bool showToleranceB = true;
   bool showToleranceDeltaE = false;
 
-  // A análise começa vazia. Os resultados só aparecem depois de uma pesquisa.
+  // The analysis starts empty. Results are only displayed after a search.
   bool hasSearched = false;
 
   List<Measurement> get _measurements {
@@ -106,7 +105,7 @@ class _AnalysePageState extends State<AnalysePage> {
       return DateTime(2025, 1, 1);
     }
     return _measurements
-        .map((m) => m.datum as DateTime)
+        .map((m) => m.datum)
         .reduce((a, b) => a.isBefore(b) ? a : b);
   }
 
@@ -115,7 +114,7 @@ class _AnalysePageState extends State<AnalysePage> {
       return DateTime(2026, 9, 8);
     }
     return _measurements
-        .map((m) => m.datum as DateTime)
+        .map((m) => m.datum)
         .reduce((a, b) => a.isAfter(b) ? a : b);
   }
 
@@ -123,8 +122,8 @@ class _AnalysePageState extends State<AnalysePage> {
   void initState() {
     super.initState();
 
-    // Datumsfilter bleiben beim Start leer.
-    // Von/Bis werden nur gesetzt, wenn der Benutzer ein Datum eingibt.
+    // Date filters remain empty on startup.
+    // From/To are only set when the user enters a date.
     startDate = null;
     endDate = null;
     vonController.clear();
@@ -174,7 +173,7 @@ class _AnalysePageState extends State<AnalysePage> {
       final baNr = m.baNr.toString();
       final benutzer = m.benutzer.toString();
       final status = m.status.toString().trim().toLowerCase();
-      final date = m.datum as DateTime;
+      final date = m.datum;
 
       final artikelSearch =
           artikelController.text.trim().toLowerCase();
@@ -209,7 +208,7 @@ class _AnalysePageState extends State<AnalysePage> {
           endMatch;
     }).toList();
 
-    result.sort((a, b) => (b.datum as DateTime).compareTo(a.datum as DateTime));
+    result.sort((a, b) => (b.datum).compareTo(a.datum));
     return result;
   }
 
@@ -342,7 +341,7 @@ class _AnalysePageState extends State<AnalysePage> {
     return SizedBox(
       width: 220,
       child: DropdownButtonFormField<String>(
-        value: value,
+        initialValue: value,
         isExpanded: true,
         decoration: InputDecoration(
           labelText: label,
@@ -413,37 +412,6 @@ class _AnalysePageState extends State<AnalysePage> {
             borderRadius: BorderRadius.circular(8),
             borderSide: const BorderSide(color: Color(0xFFCBD5E1)),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _toggle({
-    required String label,
-    required bool value,
-    required VoidCallback onTap,
-  }) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(7),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 4),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Checkbox(
-              value: value,
-              onChanged: (_) => onTap(),
-              visualDensity: VisualDensity.compact,
-            ),
-            Text(
-              label,
-              style: const TextStyle(
-                color: Color(0xFF334155),
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
         ),
       ),
     );
@@ -663,7 +631,7 @@ class _AnalysePageState extends State<AnalysePage> {
             : data.where((m) => selectedMeasurements.contains(m)).toList())
         ..sort(
           (a, b) =>
-              (a.datum as DateTime).compareTo(b.datum as DateTime),
+              (a.datum).compareTo(b.datum),
         );
 
     final bars = <LineChartBarData>[];
@@ -731,8 +699,8 @@ class _AnalysePageState extends State<AnalysePage> {
       }
     }
 
-    // Die Messreihen werden als Abweichung zum jeweiligen Bezug dargestellt.
-    // Dadurch bedeutet 0 immer "genau auf Bezug".
+    // The measurement series are displayed as deviations from the corresponding reference.
+    // Therefore, 0 always means "exactly on reference".
     addSeries(
       visible: showL,
       color: const Color(0xFF2563EB),
@@ -754,28 +722,27 @@ class _AnalysePageState extends State<AnalysePage> {
       value: (m) => m.deltaE.toDouble(),
     );
 
-    // Colibri speichert lL/uL, la/ua und lb/ub als Toleranzabstände.
-    // Untere Grenze = -lower, obere Grenze = +upper.
+    // Colibri stores lL/uL, la/ua and lb/ub as tolerance offsets.
+    // Lower limit = -lower, upper limit = +upper.
     addToleranceSeries(
       visible: showToleranceL,
       lowerValue: (m) =>
-          m.lowerL == null ? null : -m.lowerL!.toDouble(),
-      upperValue: (m) =>
-          m.upperL == null ? null : m.upperL!.toDouble(),
+        m.lowerL == null ? null : -m.lowerL!.toDouble(),
+      upperValue: (m) => m.upperL?.toDouble(),
     );
+
     addToleranceSeries(
       visible: showToleranceA,
       lowerValue: (m) =>
-          m.lowerA == null ? null : -m.lowerA!.toDouble(),
-      upperValue: (m) =>
-          m.upperA == null ? null : m.upperA!.toDouble(),
+        m.lowerA == null ? null : -m.lowerA!.toDouble(),
+      upperValue: (m) => m.upperA?.toDouble(),
     );
+
     addToleranceSeries(
       visible: showToleranceB,
       lowerValue: (m) =>
-          m.lowerB == null ? null : -m.lowerB!.toDouble(),
-      upperValue: (m) =>
-          m.upperB == null ? null : m.upperB!.toDouble(),
+        m.lowerB == null ? null : -m.lowerB!.toDouble(),
+      upperValue: (m) => m.upperB?.toDouble(),
     );
 
     if (showToleranceDeltaE) {
@@ -833,7 +800,7 @@ class _AnalysePageState extends State<AnalysePage> {
       }
     }
 
-    // 0 ist der Bezug und soll immer sichtbar sein.
+    // 0 represents the reference and should always remain visible.
     includeValue(0);
 
     if (!minY.isFinite || !maxY.isFinite) {
@@ -896,10 +863,10 @@ class _AnalysePageState extends State<AnalysePage> {
 
     final toleranceZones = <HorizontalRangeAnnotation>[];
 
-    // Dynamische Y-Achse:
-    // Die Skala richtet sich nach den aktuell sichtbaren Messreihen UND
-    // den realen Colibri-Toleranzen des jeweiligen Standards.
-    // Es gibt hier keinen fest definierten Wert wie ±0,50.
+    // Dynamic Y-axis:
+    // The scale is based on the currently visible measurement series AND
+    // the actual Colibri tolerances of the respective standard.
+    // There is no fixed value such as ±0.50 here.
     double niceAxisInterval(double span) {
       if (!span.isFinite || span <= 0) return 0.1;
 
@@ -926,9 +893,9 @@ class _AnalysePageState extends State<AnalysePage> {
 
     final axisInterval = niceAxisInterval(maxY - minY);
 
-    // Zusätzliche Achsenbeschriftungen genau an den aktiven
-    // Colibri-Toleranzgrenzen. Diese Grenzen können je nach Standard
-    // und ausgewählter Messreihe unterschiedlich sein.
+    // Additional axis labels exactly at the active
+    // Colibri tolerance limits. These limits may vary depending on the standard
+    // and the selected measurement series.
     final activeToleranceLabels = <double>{};
 
     for (final m in chartData) {
@@ -964,12 +931,12 @@ class _AnalysePageState extends State<AnalysePage> {
       }
     }
 
-    if (zoneLower != null && zoneUpper != null && zoneLower! <= zoneUpper!) {
-      if (minY < zoneLower!) {
+    if (zoneLower != null && zoneUpper != null && zoneLower <= zoneUpper) {
+      if (minY < zoneLower) {
         toleranceZones.add(
           HorizontalRangeAnnotation(
             y1: minY,
-            y2: zoneLower!,
+            y2: zoneLower,
             color: const Color(0xFFFEE2E2).withValues(alpha: 0.55),
           ),
         );
@@ -977,16 +944,16 @@ class _AnalysePageState extends State<AnalysePage> {
 
       toleranceZones.add(
         HorizontalRangeAnnotation(
-          y1: zoneLower!,
-          y2: zoneUpper!,
+          y1: zoneLower,
+          y2: zoneUpper,
           color: const Color(0xFFDCFCE7).withValues(alpha: 0.55),
         ),
       );
 
-      if (maxY > zoneUpper!) {
+      if (maxY > zoneUpper) {
         toleranceZones.add(
           HorizontalRangeAnnotation(
-            y1: zoneUpper!,
+            y1: zoneUpper,
             y2: maxY,
             color: const Color(0xFFFEE2E2).withValues(alpha: 0.55),
           ),
@@ -1103,7 +1070,7 @@ class _AnalysePageState extends State<AnalysePage> {
                           return const SizedBox();
                         }
 
-                        final date = chartData[index].datum as DateTime;
+                        final date = chartData[index].datum;
 
                         return SideTitleWidget(
                           meta: meta,
@@ -1157,7 +1124,7 @@ class _AnalysePageState extends State<AnalysePage> {
                         }
 
                         return LineTooltipItem(
-                          '${formatDateTime(m.datum as DateTime)}\n'
+                          '${formatDateTime(m.datum)}\n'
                           '${m.artikelnummer}\n'
                           'BA-Nr.: ${m.baNr}\n'
                           '${labels.join('\n')}\n'
@@ -1537,7 +1504,7 @@ class _AnalysePageState extends State<AnalysePage> {
                                       SizedBox(
                                         width: 92,
                                         child: Text(
-                                          formatDate(m.datum as DateTime),
+                                          formatDate(m.datum),
                                           style: const TextStyle(
                                             fontSize: 11,
                                             color: Color(0xFF334155),
@@ -1907,17 +1874,6 @@ class _AnalysePageState extends State<AnalysePage> {
   @override
   Widget build(BuildContext context) {
     final data = displayedMeasurements;
-
-    final validSelectedMeasurements = selectedMeasurements
-        .where((m) => data.contains(m))
-        .toSet();
-
-    final currentMeasurement =
-        data.contains(selectedMeasurement)
-            ? selectedMeasurement
-            : (validSelectedMeasurements.isNotEmpty
-                ? validSelectedMeasurements.last
-                : (data.isNotEmpty ? data.first : null));
 
     return Scaffold(
       backgroundColor: const Color(0xFFF8FAFC),
