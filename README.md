@@ -94,6 +94,40 @@ This separation also allows the existing measurement process to remain unchanged
 
 ---
 
+## Application Preview
+
+### Dashboard
+
+The dashboard provides an overview of the generated measurement dataset and key quality indicators.
+
+![Dashboard](assets/images/dashboard.png)
+
+### Measurements
+
+Measurement records can be explored and filtered directly within the application.
+
+![Measurements](assets/images/Measurements.png)
+
+### Measurement Details
+
+Individual measurements can be inspected in detail, including measured values, reference values, deviations and applicable tolerances.
+
+![Measurement Details](assets/images/Measurement_Details.png)
+
+### Analysis
+
+The analysis interface visualizes measurement data and supports the investigation of quality deviations and trends.
+
+![Analysis](assets/images/Analysis.png)
+
+### Frag KI Analysis
+
+The Frag KI interface provides predefined analytical workflows for investigating the loaded measurement dataset.
+
+![Frag KI Analysis](assets/images/AI_Analysis.png)
+
+---
+
 ## Main Features
 
 ### Dashboard
